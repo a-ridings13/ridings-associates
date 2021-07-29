@@ -1,0 +1,13 @@
+#!/usr/bin/php
+<?php
+
+require __DIR__ . '/../../../vendor/autoload.php';
+
+use Siteworx\Cli\Kernel;
+use Siteworx\Library\Application\Core;
+
+$app = Core::factory();
+
+$kernel = new Kernel();
+
+$kernel->handle($argv[1] ?? '');

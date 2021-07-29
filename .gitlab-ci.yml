@@ -1,0 +1,50 @@
+stages:
+  - Testing
+  - Teardown
+
+Run Code Lint:
+  stage: Testing
+  image: siteworxpro/php-node:7.4.2-12.14.1
+  except:
+    - tags
+  tags:
+    - tests
+  before_script:
+    - chmod +x bin/*
+    - composer install
+  script:
+    - ./vendor/bin/phpcs ./Siteworx --standard=./rules.xml --colors -v
+    - sudo npm install
+    - ./node_modules/.bin/eslint src/js/
+
+Tests:
+  stage: Testing
+  image: siteworxpro/php-node:7.4.2-12.14.1
+  except:
+    - tags
+  tags:
+    - tests
+  before_script:
+    - chmod +x bin/*
+  services:
+    - name: mysql:5.7
+      alias: mysql
+    - name: siteworxpro/goaws
+      alias: goaws
+    - name: selenium/standalone-chrome-debug
+      alias: selenium-standalone-chrome
+    - name: memcached
+  variables:
+    MYSQL_ROOT_PASSWORD: password
+  artifacts:
+    when: always
+    paths:
+      - tests/_output
+      - var/logs
+    expire_in: 7 days
+  script:
+    - echo $CI_BUILD_REF_NAME"-"$CI_COMMIT_SHORT_SHA > build.txt
+    - chmod 755 bin/deploy.sh
+    - bin/deploy.sh test
+    - chmod 770 -R tests
+    - vendor/bin/codecept run --steps

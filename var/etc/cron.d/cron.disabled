@@ -1,0 +1,2 @@
+* * * * * www-data /var/www/html/Siteworx/Cli/bin/app --cron >> /var/www/html/var/logs/cron.log
+

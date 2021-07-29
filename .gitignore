@@ -1,0 +1,27 @@
+## Editors
+.idea/
+
+#Composer
+vendor/
+composer.lock
+
+#Vagrant
+.vagrant
+ubuntu-xenial-16.04-cloudimg-console.log
+ubuntu-bionic-18.04-cloudimg-console.log
+
+# Javascript
+node_modules/
+package-lock.json
+public/js/**/*
+
+# App Runtime
+.env
+var/cache/
+var/config/config.php
+.epoch
+var/logs/
+authorization.key
+
+#Junk Files
+.DS_Store
